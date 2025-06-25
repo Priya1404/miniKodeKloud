@@ -1,97 +1,111 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# KodeKloud Lite
 
-# Getting Started
+This is a lightweight version of the KodeKloud mobile app, built with React Native and TypeScript. It showcases modern mobile development practices like clean architecture, offline support, video playback, deep linking, push notifications, and thorough testing.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+- **Browse Courses**: Scroll through a list of courses with thumbnails, titles, and authors.
+- **View Course Details**: See in-depth info about any course and enroll or unenroll.
+- **Watch Lessons:**: Vimeo video integration with progress tracking
+- **Track Progress**: Track learning progress with API sync and local caching
+- **Deep Link Support**: Navigate directly to courses and lessons via custom URLs
+- **Stay Notified**: Local notifications for enrollment reminders and engagement
+- **Offline Support**: Course list caching with MMKV and network status detection
+- **Clean Codebase**: Built with clear separation of concerns and reusable components.
+- **Clean Codebase**: Built with clear separation of concerns and reusable components.
+- **Testing**: Comprehensive unit tests for all services and components
+- **CI/CD Ready**: GitHub Actions workflow for linting, testing, and building
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Tech Stack
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- React Native 0.80
+- TypeScript 5
+- Redux Toolkit
+- React Navigation v7
+- Axios for API calls
+- MMKV + AsyncStorage for local data
+- Vimeo video playback
+- Push notifications
+- Jest + React Native Testing Library
 
-```sh
-# Using npm
-npm start
+## Architecture
 
-# OR using Yarn
-yarn start
+### Clean Architecture Layers
+
+```
+src/
+├── api/           # Data Layer - API clients and interceptors
+├── services/      # Domain Layer - Repositories and business logic
+├── store/         # Presentation Layer - State management (Redux)
+├── screens/       # Presentation Layer - UI screens
+├── components/    # Presentation Layer - Reusable UI components
+├── models/        # Domain Layer - TypeScript interfaces
+├── hooks/         # Presentation Layer - Custom hooks
+└── tests/         # Test files
 ```
 
-## Step 2: Build and run your app
+### Design Patterns Implemented
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+1. **Repository Pattern**: `CourseRepository` abstracts data access
+2. **Observer Pattern**: Redux for state changes and progress updates
+3. **Dependency Injection**: Service locator with React Context
+4. **MVVM**: ViewModels in Redux slices and custom hooks
+5. **Singleton Pattern**: NotificationService for centralized notification management
 
-### Android
+## Core Features
 
-```sh
-# Using npm
-npm run android
+### 1. Course Management
 
-# OR using Yarn
-yarn android
-```
+#### Browse Courses
+- Paginated course list with infinite scroll
+- Course cards with thumbnails, titles, authors, and progress
+- Pull-to-refresh functionality
+- Offline support with cached course data
 
-### iOS
+#### Course Detail & Enrollment
+- Detailed course information
+- Enroll/unenroll functionality
+- Automatic enrollment reminder scheduling
+- Progress tracking integration
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### 2. Video Playback
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+#### Vimeo Integration
+- Seamless video playback with React Native Vimeo
+- Progress tracking and resume functionality
+- Lesson completion tracking
+- Offline video position caching with MMKV
 
-```sh
-bundle install
-```
+### 3. Progress Tracking
 
-Then, and every time you update your native dependencies, run:
+#### ProgressService
+- Syncs progress with API and local cache
+- Handles offline scenarios
+- Provides real-time progress updates
 
-```sh
-bundle exec pod install
-```
+### 4. Deep Linking
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+The app supports deep linking to navigate directly to specific courses and lessons.
 
-```sh
-# Using npm
-npm run ios
+### 5. Push Notifications
 
-# OR using Yarn
-yarn ios
-```
+The app supports local push notifications for enhanced user engagement.
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+#### Features
+- **Enrollment Reminders**: Automatic 24-hour reminders when enrolling in courses
+- **Smart Cancellation**: Automatic cancellation when unenrolling
+- **Permission Management**: Graceful handling of notification permissions
+- **Multiple Notification Types**: Immediate, scheduled, and repeating notifications
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### 6. Offline Support
 
-## Step 3: Modify your app
+#### Offline Banner
+- Displays when device is offline
+- Provides user feedback about connectivity status
 
-Now that you have successfully run the app, let's make changes!
+#### Caching Strategy
+- Course list cached with MMKV
+- Last viewed lesson position cached
+- Offline-first approach with sync when online
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## Screenshots
