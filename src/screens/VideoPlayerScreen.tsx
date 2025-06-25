@@ -86,24 +86,6 @@ export const VideoPlayerScreen: React.FC<VideoPlayerScreenProps> = ({
     }
   }, [courseDetail, courseId, lessonId, dispatch, selectedCourse, isPreview, previewVideoId]);
 
-  const extractVimeoId = (url: string): string | null => {
-    if (!url) return null;
-    // Remove query params and hash fragments
-    const cleanUrl = url.split('?')[0].split('#')[0];
-    const patterns = [
-      /vimeo\.com\/(\d+)/,
-      /player\.vimeo\.com\/video\/(\d+)/,
-      /vimeo\.com\/groups\/.*\/videos\/(\d+)/,
-    ];
-    for (const pattern of patterns) {
-      const match = cleanUrl.match(pattern);
-      if (match) {
-        return match[1];
-      }
-    }
-    return null;
-  };
-
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);

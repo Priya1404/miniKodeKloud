@@ -51,8 +51,8 @@ describe('ProgressService', () => {
       
       expect(mockStorage.set).toHaveBeenCalledTimes(2);
       const progressData = JSON.parse(mockStorage.set.mock.calls[0][1]);
-      expect(progressData['course1_lesson1'].completed).toBe(true);
-      expect(progressData['course1_lesson1'].synced).toBe(false);
+      expect(progressData.course1_lesson1.completed).toBe(true);
+      expect(progressData.course1_lesson1.synced).toBe(false);
     });
   });
 
@@ -180,9 +180,9 @@ describe('ProgressService', () => {
       await ProgressService.clearCourseProgress('course1');
       
       const savedData = JSON.parse(mockStorage.set.mock.calls[0][1]);
-      expect(savedData['course1_lesson1']).toBeUndefined();
-      expect(savedData['course1_lesson2']).toBeUndefined();
-      expect(savedData['course2_lesson1']).toBeDefined();
+      expect(savedData.course1_lesson1).toBeUndefined();
+      expect(savedData.course1_lesson2).toBeUndefined();
+      expect(savedData.course2_lesson1).toBeDefined();
     });
   });
 }); 

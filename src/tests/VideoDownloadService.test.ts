@@ -1,4 +1,4 @@
-import { VideoDownloadService, DownloadInfo } from '../services/VideoDownloadService';
+import { VideoDownloadService } from '../services/VideoDownloadService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Mock AsyncStorage

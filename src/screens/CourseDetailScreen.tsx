@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions, Modal, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions, Alert } from 'react-native';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
 import {
@@ -45,10 +45,12 @@ export const CourseDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const [expandedModules, setExpandedModules] = useState<{ [id: string]: boolean }>({});
   const [avatarError, setAvatarError] = useState(false);
 
+  // initial fetch
   useEffect(() => {
     dispatch(fetchCourseDetail(slug));
   }, [slug]);
 
+  // load progress from local storage
   useEffect(() => {
     if (!courseId) return;
     AsyncStorage.getItem(`progress_${courseId}`).then((val) => {
@@ -59,13 +61,15 @@ export const CourseDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     });
   }, [courseId]);
 
+  // update progress bar
   useEffect(() => {
     if (!courseDetail) return;
-    const totalLessons = courseDetail.modules.reduce((sum: number, m: any) => sum + m.lessons.length, 0);
-    const percent = totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0;
+    const total = courseDetail.modules.reduce((sum: number, m: any) => sum + m.lessons.length, 0);
+    const percent = total > 0 ? Math.round((completedLessons.length / total) * 100) : 0;
     setProgressPercent(percent);
   }, [completedLessons, courseDetail]);
 
+  // toggling enrollment and persist
   const toggleEnroll = async () => {
     if (!courseId || !courseDetail?.title) return;
     if (enrolled) {
@@ -103,9 +107,9 @@ export const CourseDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const expandCollapseAll = () => {
     if (!courseDetail) return;
     const updated: { [id: string]: boolean } = {};
-    for (let mod of courseDetail.modules) {
-      updated[mod.id] = !expandAll;
-    }
+    courseDetail.modules.forEach((m: any) => {
+      updated[m.id] = !expandAll;
+    });
     setExpandedModules(updated);
     setExpandAll(!expandAll);
   };
@@ -134,27 +138,6 @@ export const CourseDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   if (!courseDetail) {
     return <ErrorMessage message="Course not found" onRetry={() => dispatch(fetchCourseDetail(slug))} />;
   }
-
-  function extractVimeoId(url: string): string | null {
-    if (!url) return null;
-    const cleanUrl = url.split('?')[0].split('#')[0];
-    const patterns = [
-      /vimeo\.com\/(\d+)/,
-      /player\.vimeo\.com\/video\/(\d+)/,
-      /vimeo\.com\/groups\/.*\/videos\/(\d+)/,
-    ];
-    for (const pattern of patterns) {
-      const match = cleanUrl.match(pattern);
-      if (match) return match[1];
-    }
-    return null;
-  }
-
-  const videoUrl = courseDetail.thumbnailVideoUrl || null;
-  // To use the real video, we need to uncomment the line below and remove the sample ID.
-  // const videoId = videoUrl ? extractVimeoId(videoUrl) : null;
-  const sampleVimeoId = '76979871';
-  const videoId = sampleVimeoId;
 
   // Calculating duration from includes_section.course_duration
   const durationMins = courseDetail.includes_section?.course_duration || 0;
@@ -317,7 +300,7 @@ export const CourseDetailScreen: React.FC<Props> = ({ navigation, route }) => {
                       onPress={() => navigation.navigate('VideoPlayer', {
                         courseId: courseDetail.id,
                         lessonId: item.id,
-                        completedLessons: completedLessons,
+                        completedLessons,
                       })}
                       disabled={!enrolled}
                     >
@@ -346,14 +329,6 @@ export const CourseDetailScreen: React.FC<Props> = ({ navigation, route }) => {
             )}
           </View>
         ))}
-      </View>
-      {/* Debug UI for Level and Course Duration */}
-      <View style={{ margin: 16, backgroundColor: '#fff', borderRadius: 8, padding: 12 }}>
-        <Text style={{ color: 'red', fontWeight: 'bold' }}>Debug Info:</Text>
-        <Text selectable>learningPaths: {JSON.stringify(courseDetail.learningPaths)}</Text>
-        <Text selectable>includes_section: {JSON.stringify(courseDetail.includes_section)}</Text>
-        <Text style={{ fontWeight: 'bold' }}>Level: {courseDetail.difficulty_level || 'N/A'}</Text>
-        <Text style={{ fontWeight: 'bold' }}>Course Duration: {courseDetail.includes_section?.course_duration || 'N/A'}</Text>
       </View>
     </ScrollView>
   );

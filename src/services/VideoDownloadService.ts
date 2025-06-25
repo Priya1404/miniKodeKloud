@@ -276,6 +276,7 @@ export class VideoDownloadService {
 
   // To get sample video download URL
   static getSampleVideoDownloadUrl(videoId: string): string {
+    console.log("VideoId: ", videoId)
     return `https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4`;
   }
 } 

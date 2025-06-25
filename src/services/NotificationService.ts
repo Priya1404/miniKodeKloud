@@ -76,14 +76,14 @@ export class NotificationService {
 
     // To configure notification handlers
     PushNotification.configure({
-      onRegister: function (token: any) {
+      onRegister () {
       },
-      onNotification: function (notification: any) {
+      onNotification (notification: any) {
         notification.finish();
       },
-      onAction: function (notification: any) {
+      onAction () {
       },
-      onRegistrationError: function (err: any) {
+      onRegistrationError (err: any) {
         console.error('Registration error:', err.message, err);
       },
       permissions: {
@@ -127,11 +127,11 @@ export class NotificationService {
           PushNotification.checkPermissions((permissions: any) => {
             try {
               resolve(permissions.alert || false);
-            } catch (err) {
+            } catch {
               resolve(false);
             }
           });
-        } catch (err) {
+        } catch {
           resolve(false);
         }
       });

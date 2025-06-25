@@ -11,10 +11,15 @@ import { CourseDetail } from '../models/CourseDetail';
 
 // Async thunks
 export const fetchCourses = createAsyncThunk<
-  CourseListResponse,
-  { page: number; limit: number; refresh?: boolean },
-  { state: RootState }
->('courses/fetchCourses', async ({ page, limit }, { getState }) => {
+    CourseListResponse,
+    { page: number;
+       limit: number;
+        refresh?: boolean 
+      },
+    { state: RootState 
+
+    }
+    >('courses/fetchCourses', async ({ page, limit }, { getState }) => {
   const { filters } = getState().courses;
   const response = await courseRepository.getCourses({ page, limit, ...filters });
   return response;
@@ -59,7 +64,6 @@ export const toggleCourseEnrollment = createAsyncThunk(
 export const updateLessonProgress = createAsyncThunk(
   'courses/updateLessonProgress',
   async ({ lessonId, courseId, completed }: { lessonId: string; courseId: string; completed: boolean }) => {
-    try {
       let response: ProgressResponse;
       
       if (completed) {
@@ -69,21 +73,14 @@ export const updateLessonProgress = createAsyncThunk(
       }
       
       return response;
-    } catch (error) {
-      throw error;
-    }
   }
 );
 
 export const syncPendingProgress = createAsyncThunk(
   'courses/syncPendingProgress',
   async () => {
-    try {
       await ProgressService.syncPendingProgress();
       return true;
-    } catch (error) {
-      throw error;
-    }
   }
 );
 
@@ -347,8 +344,7 @@ const courseSlice = createSlice({
 
     // toggleCourseEnrollment
     builder
-      .addCase(toggleCourseEnrollment.pending, (state) => {
-        // Don't set loading for enrollment toggle to keep UI responsive
+      .addCase(toggleCourseEnrollment.pending, () => {
       })
       .addCase(toggleCourseEnrollment.fulfilled, (state, action) => {
         const courseId = action.payload;

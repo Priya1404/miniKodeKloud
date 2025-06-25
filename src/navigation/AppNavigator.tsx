@@ -1,12 +1,11 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, getStateFromPath } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Linking } from 'react-native';
 import { CourseListScreen } from '../screens/CourseListScreen';
 import CourseDetailScreen from '../screens/CourseDetailScreen';
 import { VideoPlayerScreen } from '../screens/VideoPlayerScreen';
 import { TouchableOpacity, Text } from 'react-native';
-import { getStateFromPath } from '@react-navigation/native';
 
 export type RootStackParamList = {
   CourseList: undefined;

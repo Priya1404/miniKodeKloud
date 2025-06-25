@@ -1,5 +1,5 @@
 import { MMKV } from 'react-native-mmkv';
-import { courseApi, ProgressUpdateRequest, ProgressResponse, CourseProgressResponse } from '../api/courseApi';
+import { courseApi, ProgressUpdateRequest, ProgressResponse } from '../api/courseApi';
 
 let storage: MMKV = new MMKV();
 

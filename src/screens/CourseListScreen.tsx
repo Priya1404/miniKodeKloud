@@ -37,12 +37,11 @@ interface CourseListScreenProps {
 
 export const CourseListScreen: React.FC<CourseListScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
-  const { courses, pagination, loading, error, filters } = useAppSelector((state) => state.courses);
+  const { courses, pagination, loading, filters } = useAppSelector((state) => state.courses);
   const { isConnected, isInternetReachable } = useNetworkStatus();
   const [offlineCourses, setOfflineCourses] = useState<Course[] | null>(null);
   const [bookmarkedCourseIds, setBookmarkedCourseIds] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState('All');
-  const [offlineError, setOfflineError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const isListEnd = pagination.next_page === null;
   const [lastLesson, setLastLesson] = useState<{ course: Course, lessonId: string, lastUpdated: string } | null>(null);
@@ -88,16 +87,12 @@ export const CourseListScreen: React.FC<CourseListScreenProps> = ({ navigation }
         const cachedCourses = await courseRepository.getOfflineCourses();
         if (cachedCourses && cachedCourses.length > 0) {
           dispatch(setCoursesAction(cachedCourses));
-          setOfflineError(null);
-        } else {
-          setOfflineError('No courses available offline.');
         }
       } catch (e) {
-        setOfflineError('No courses available offline.');
+        console.error('Error loading offline courses:', e);
       }
     } else {
       // when online, fetch from API
-      setOfflineError(null);
       dispatch(fetchCourses({ page: 1, limit: 10, refresh: true }));
     }
   }, [dispatch, isConnected]);
@@ -184,8 +179,7 @@ export const CourseListScreen: React.FC<CourseListScreenProps> = ({ navigation }
   }, [loading, handleRetry]);
 
   const renderHeader = useCallback(() => (
-    <View style={styles.infoContainer}>
-    </View>
+    <View style={styles.infoContainer} />
   ), []);
 
   const planOptions = Array.from(new Set(courses.map((c) => c.plan))).filter(Boolean);

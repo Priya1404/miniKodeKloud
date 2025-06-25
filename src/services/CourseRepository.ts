@@ -31,7 +31,7 @@ export class CourseRepository {
   async getCourses(filters: CourseFilters): Promise<CourseListResponse> {
     try {
       // applying sorting based on the sortBy filter
-      let data = await courseApi.getCourses(filters);
+      const data = await courseApi.getCourses(filters);
       
       if (filters.sortBy) {
         switch (filters.sortBy) {
@@ -45,7 +45,7 @@ export class CourseRepository {
       }
 
       return data;
-    } catch (e) {
+    } catch {
       throw new Error('Failed to fetch courses');
     }
   }
@@ -53,7 +53,7 @@ export class CourseRepository {
   async getCourseById(courseId: string): Promise<Course> {
     try {
       return await courseApi.getCourseById(courseId);
-    } catch (err) {
+    } catch {
       throw new Error('Failed to fetch course by ID');
     }
   }
@@ -125,7 +125,7 @@ export class CourseRepository {
 
         const localProgress = ProgressService.getLocalProgressForCourse(course.id);
 
-        for (let lesson of lessons) {
+        for (const lesson of lessons) {
             const entry = localProgress.find(p => p.lessonId === lesson.id);
             lesson.isCompleted = entry?.completed || false;
         }

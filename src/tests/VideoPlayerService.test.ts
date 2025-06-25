@@ -49,7 +49,7 @@ describe('VideoPlayerService', () => {
       await VideoPlayerService.savePlaybackPosition('lesson1', 'course1', 180, 600);
       
       const savedData = JSON.parse(mockStorage.set.mock.calls[0][1]);
-      expect(savedData['course1_lesson1'].position).toBe(180);
+      expect(savedData.course1_lesson1.position).toBe(180);
     });
   });
 
@@ -143,8 +143,8 @@ describe('VideoPlayerService', () => {
       await VideoPlayerService.clearPlaybackPosition('lesson1', 'course1');
       
       const savedData = JSON.parse(mockStorage.set.mock.calls[0][1]);
-      expect(savedData['course1_lesson1']).toBeUndefined();
-      expect(savedData['course1_lesson2']).toBeDefined();
+      expect(savedData.course1_lesson1).toBeUndefined();
+      expect(savedData.course1_lesson2).toBeDefined();
     });
   });
 
@@ -179,9 +179,9 @@ describe('VideoPlayerService', () => {
       await VideoPlayerService.clearCoursePlaybackPositions('course1');
       
       const savedData = JSON.parse(mockStorage.set.mock.calls[0][1]);
-      expect(savedData['course1_lesson1']).toBeUndefined();
-      expect(savedData['course1_lesson2']).toBeUndefined();
-      expect(savedData['course2_lesson1']).toBeDefined();
+      expect(savedData.course1_lesson1).toBeUndefined();
+      expect(savedData.course1_lesson2).toBeUndefined();
+      expect(savedData.course2_lesson1).toBeDefined();
     });
   });
 

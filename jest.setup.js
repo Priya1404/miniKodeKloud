@@ -24,14 +24,11 @@ jest.mock('react-native-gesture-handler', () => {
     PanGestureHandler: View,
     PinchGestureHandler: View,
     RotationGestureHandler: View,
-    State: {},
     Directions: {},
     gestureHandlerRootHOC: jest.fn((component) => component),
-    Swipeable: View,
-    DrawerLayout: View,
     TouchableHighlight: TouchableOpacity,
     TouchableNativeFeedback: TouchableOpacity,
-    TouchableOpacity: TouchableOpacity,
+    TouchableOpacity,
     TouchableWithoutFeedback: TouchableOpacity,
   };
 });

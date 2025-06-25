@@ -62,7 +62,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ planOptions }) => {
   };
 
   const handleSelectSort = (sortIds: string[]) => {
-    let sort_by = undefined;
+    let sort_by;
     if (sortIds[0] === 'newest') sort_by = 'created_at.desc';
     if (sort_by) {
       dispatch(setCourseFilters({ sort_by }));
